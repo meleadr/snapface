@@ -18,11 +18,7 @@ export class FaceSnapComponent implements OnInit {
   }
 
   onSnap() {
-    if(this.snapped) {
-      this.faceSnapService.unSnapFaceSnapById(this.faceSnap.id);
-    } else {
-      this.faceSnapService.snapFaceSnapById(this.faceSnap.id);
-    }
+    this.snapped ? this.faceSnapService.snapFaceSnapById(this.faceSnap.id, 'unsnap') : this.faceSnapService.snapFaceSnapById(this.faceSnap.id, 'snap');
     this.snapped = !this.snapped;
   }
 }

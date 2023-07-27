@@ -38,29 +38,21 @@ export class FaceSnapsService {
     return this.faceSnaps;
   }
 
-  snapFaceSnapById(id: number): void {
+  getFaceSnapById(id: number): FaceSnap {
     const faceSnap: FaceSnap | undefined = this.faceSnaps.find(
       (faceSnap: FaceSnap): boolean => {
         return faceSnap.id === id;
       }
     );
     if (faceSnap) {
-      faceSnap.snaps++;
+      return faceSnap;
     }else{
       throw new Error('FaceSnap not found');
     }
   }
 
-  unSnapFaceSnapById(id: number): void {
-    const faceSnap: FaceSnap | undefined = this.faceSnaps.find(
-      (faceSnap: FaceSnap): boolean => {
-        return faceSnap.id === id;
-      }
-    );
-    if (faceSnap) {
-      faceSnap.snaps--;
-    }else{
-      throw new Error('FaceSnap not found');
-    }
+  snapFaceSnapById(id:number, snapType: 'snap' | 'unsnap'): void {
+    const faceSnap = this.getFaceSnapById(id);
+    snapType === 'snap' ? faceSnap.snaps++ : faceSnap.snaps--;
   }
 }
