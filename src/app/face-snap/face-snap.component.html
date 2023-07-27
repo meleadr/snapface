@@ -3,13 +3,5 @@
   <p>Mis en ligne {{ faceSnap.createdDate | date: 'le dd/MM/yy à HH:mm' }}</p>
   <img [src]="faceSnap.imageUrl" [alt]="faceSnap.title">
   <p>{{ faceSnap.description }}</p>
-  <p>
-    <button (click)="onSnap()">
-      {{snapped ? '👎' : '👍'}}
-    </button>
-    <span [ngStyle]="{ color: 'rgb(0,'+faceSnap.snaps*5+'0)'}"> 🤌 {{ faceSnap.snaps }}</span>
-  </p>
-  <p *ngIf="faceSnap.location">
-    📍 {{ faceSnap.location }}
-  </p>
+  <button (click)="onViewFaceSnap()">View</button>
 </div>
