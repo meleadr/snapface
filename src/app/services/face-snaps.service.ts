@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {FaceSnap} from "../models/face-snap.model";
+import {FormGroup} from "@angular/forms";
 @Injectable({
   providedIn: 'root'
 })
@@ -54,5 +55,15 @@ export class FaceSnapsService {
   snapFaceSnapById(id:number, snapType: 'snap' | 'unsnap'): void {
     const faceSnap = this.getFaceSnapById(id);
     snapType === 'snap' ? faceSnap.snaps++ : faceSnap.snaps--;
+  }
+
+  addFaceSnap(form: FormGroup): void {
+    console.log(form.value);
+    const faceSnap: FaceSnap = {
+      ...form.value,
+    }
+    const id = this.faceSnaps[this.faceSnaps.length - 1].id;
+    faceSnap.id = id + 1;
+    this.faceSnaps.push(faceSnap);
   }
 }
