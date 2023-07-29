@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import {FaceSnap} from "../models/face-snap.model";
 import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {Observable, switchMap} from "rxjs";
+import {map} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -17,22 +18,18 @@ export class FaceSnapsService {
     return this.http.get<FaceSnap[]>('http://localhost:3000/faceSnaps');
   }
 
-  getFaceSnapById(id: number): FaceSnap {
-    const faceSnap: FaceSnap | undefined = this.faceSnaps.find(
-      (faceSnap: FaceSnap): boolean => {
-        return faceSnap.id === id;
-      }
-    );
-    if (faceSnap) {
-      return faceSnap;
-    }else{
-      throw new Error('FaceSnap not found');
-    }
+  getFaceSnapById(id: number): Observable<FaceSnap> {
+   return this.http.get<FaceSnap>(`http://localhost:3000/faceSnaps/${id}`);
   }
 
-  snapFaceSnapById(id:number, snapType: 'snap' | 'unsnap'): void {
-    const faceSnap = this.getFaceSnapById(id);
-    snapType === 'snap' ? faceSnap.snaps++ : faceSnap.snaps--;
+  snapFaceSnapById(id:number, snapType: 'snap' | 'unsnap'): Observable<FaceSnap> {
+    return this.getFaceSnapById(id).pipe(
+      map(faceSnap => ({
+        ...faceSnap,
+        snaps: snapType === 'snap' ? faceSnap.snaps + 1 : faceSnap.snaps - 1
+      })),
+      switchMap(faceSnap => this.http.put<FaceSnap>(`http://localhost:3000/faceSnaps/${id}`, faceSnap))
+    );
   }
 
   addFaceSnap(formValue: { title:string, description:string, imageUrl:string, location?:string }): void {
