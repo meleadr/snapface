@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FaceSnap} from "../models/face-snap.model";
 import {FaceSnapsService} from "../services/face-snaps.service";
 import {ActivatedRoute} from "@angular/router";
@@ -9,7 +9,7 @@ import {Observable, tap} from "rxjs";
   templateUrl: './single-face-snap.component.html',
   styleUrls: ['./single-face-snap.component.scss']
 })
-export class SingleFaceSnapComponent {
+export class SingleFaceSnapComponent implements OnInit{
 
   faceSnap$!: Observable<FaceSnap>
   snapped!: boolean;
